@@ -1,7 +1,7 @@
 
 body {
-    background: rgb(192, 192, 255);
-    background: linear-gradient(90deg, rgb(192, 192, 255) 0%, rgb(102, 102, 255) 100%);
+    background: rgb(128, 179, 255);
+    background: linear-gradient(90deg, rgb(128, 179, 255) 0%, rgb(13, 110, 253) 100%);
 }
 label {
 font-family: "Raleway", sans-serif;
@@ -47,7 +47,7 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(102, 102, 255, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
 }
 
 .FormButton:active{
@@ -55,7 +55,7 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(102, 102, 255, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
 }
 
 .FormButtonPure{
@@ -74,14 +74,14 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(102, 102, 255, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
 }
 
 .FormButtonPure:active{
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(102, 102, 255, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
 }
 
 .LogoLogin{
@@ -157,7 +157,7 @@ padding: 1rem 3rem;
     text-decoration: none;
 }
 .linkToPassword:hover{
-    color: rgb(102, 102, 255);
+    color: rgb(13, 110, 253);
 }
 
 .SignUpModalFormLabel{
