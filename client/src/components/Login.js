@@ -1,12 +1,20 @@
 import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
 import './Login.css';
-import helpCuceiLogo from '../assets/helpqci0.png'
+import helpCuceiLogo from '../assets/helpqci.png'
 import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 
 function Login() {
 
-  const [showToast, setShowToast] = useState(false);
+  //NOTIFICACIONES
+  const [passwordCheck, setPasswordCheck] = useState(false);
+  const [emailCheck, setEmailCheck] = useState(false);
+  const [emptyCheck, setEmptyCheck] = useState(false);
+  const [errorSignUp, setErrorSignUp] = useState(false);
+  const [successSignUp, setSuccessSignUp] = useState(false);
+  const [successSignIn, setSuccessSignIn] = useState(false);
+  const [failedSignIn, setFailedSignIn] = useState(false);
+
   const [users, setUsers] = useState([]);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -23,23 +31,55 @@ function Login() {
     password: "",
     rol: "Estudiante"
   });
+  const [signInData, setSignInData] = useState({
+    email: "",
+    password: ""
+  });
+
   const signUpUser = () =>{
-    if(signUpData.password !== password){
-      setShowToast(true)
+    //VALIDACIÓN CAMPOS VACÍOS
+    if(
+      signUpData.name === '' ||
+      signUpData.lastName === '' ||
+      signUpData.secondLastName === '' ||
+      signUpData.dateOfBirth === '' ||
+      signUpData.career === '' ||
+      signUpData.ingressDate === '' ||
+      signUpData.email === '' ||
+      signUpData.password === ''
+    ){
+      setEmptyCheck(true);
       return;
     }
-    setShow(false)
+    //VALIDACIÓN CONTRASEÑAS COINCIDEN
+    if(signUpData.password !== password){
+      setPasswordCheck(true)
+      return;
+    }
+    //VALIDACIÓN CORREO YA REGISTRADO
+    var flag = 0;
+    users.forEach( (e) =>{
+      console.log("E:",e);
+      console.log("e.correo:",e.correo," | handleEmail:",signUpData.email);
+      if (e.correo === signUpData.email){
+        flag = 1;
+        setEmailCheck(true)
+      };
+    });
+    if(flag===1){
+      return;
+    }
+    //PETICIÓ POST PARA REGISTRAR USUARIO
     try{
       console.log("REGISTRA");
-      /*
       Axios.post('http://localhost:3001/api/insert',signUpData).then(() => {
         alert('successful insert')
       });
-      */
+      setShow(false)
     }catch{
       console.log("ERROR CATCH");
+      setErrorSignUp(true);
     }
-    
   };
 
 
@@ -48,12 +88,44 @@ function Login() {
   },[])
 
   function getUsers(){
-    Axios.get('http://localhost:3001/api/get').then((response) => {
+    try{
+      Axios.get('http://localhost:3001/api/get').then((response) => {
       console.log("RESPONSE: ", response.data);
       setUsers(response.data);
     });
+    }catch{
+      console.log("ERROR GET USERS")
+    }
   }
 
+  function doubleOnClick(){
+    setEmailCheck(true);
+    showSignUpData();
+  }
+
+  function checkSignIn(){
+    console.log("SignInData: ",signInData);
+    let flag = 0;
+    users.forEach( (e) =>{
+      if (e.correo === signInData.email && e.contraseña === signInData.password){
+        setSuccessSignIn(true);
+        flag = 1;
+        return;
+      };
+    });
+    if(flag === 0){
+      setFailedSignIn(true);
+    }
+  }
+
+  function handleSignInEmail(obj){
+    console.log("handleSignInEmail: ",obj.target.value)
+    signInData.email=obj.target.value
+  }
+  function handleSignInPassword(obj){
+    console.log("handleSignInPassword: ",obj.target.value)
+    signInData.password=obj.target.value
+  }
   function handleName(obj){
     console.log("handleName: ",obj.target.value)
     signUpData.name=obj.target.value
@@ -107,16 +179,16 @@ function Login() {
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>CORREO ELECTRÓNICO</Form.Label>
-              <Form.Control className='formControl' type="email" placeholder="Ingrese su correo electrónico" />
+              <Form.Control className='formControl' type="email" placeholder="Ingrese su correo electrónico" onChange={(value)=>handleSignInEmail(value)}/>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>CONTRASEÑA</Form.Label>
-              <Form.Control className='formControl' type="password" placeholder="ingrese su contraseña" />
+              <Form.Control className='formControl' type="password" placeholder="ingrese su contraseña" onChange={(value)=>handleSignInPassword(value)}/>
               <a  className='linkToPassword' href="App.js" title="Forgot Password">* olvidé mi contraseña</a>
             </Form.Group>
             <Form.Group className="FooterButtons">
-              <Button variant="primary" type="submit" className='FormButton'>
+              <Button variant="primary" className='FormButton' onClick={checkSignIn}>
                 Ingresar
               </Button>
               <Button variant="primary" className='FormButton' onClick={handleShow}>
@@ -184,7 +256,7 @@ function Login() {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-      <Button variant="secondary" className='FormButtonPure' onClick={showSignUpData}>
+      <Button variant="secondary" className='FormButtonPure' onClick={doubleOnClick}>
           Try
         </Button>
         <Button variant="secondary" className='FormButtonPure' onClick={handleClose}>
@@ -194,8 +266,9 @@ function Login() {
           Registrarse
         </Button>
       </Modal.Footer>
+
       <ToastContainer position="top-center" className="p-3">
-      <Toast onClose={() => setShowToast(false)} show={showToast} delay={2000} autohide>
+      <Toast onClose={() => setPasswordCheck(false)} show={passwordCheck} delay={2000} autohide>
         <Toast.Header>
           <img
             src="holder.js/20x20?text=%20"
@@ -204,12 +277,96 @@ function Login() {
           />
           <strong className="me-auto">ERROR</strong>
         </Toast.Header>
-        <Toast.Body>LAS CONTRASEÑAS NO COINCIDEN.</Toast.Body>
+        <Toast.Body>las contraseñas no coinciden.</Toast.Body>
       </Toast>
     </ToastContainer>
+
+    <ToastContainer position="top-center" className="p-3">
+      <Toast onClose={() => setEmailCheck(false)} show={emailCheck} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>Correo electrónico ya registrado.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-center" className="p-3">
+      <Toast onClose={() => setEmptyCheck(false)} show={emptyCheck} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>Asegúrate de llenar todos los campos.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
     </Modal>
 
-    
+    <ToastContainer position="top-end" className="p-3">
+      <Toast onClose={() => setSuccessSignUp(false)} show={successSignUp} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">NOTIFICACIÓN</strong>
+        </Toast.Header>
+        <Toast.Body>Usuario registrado correctamente.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-end" className="p-3">
+      <Toast onClose={() => setErrorSignUp(false)} show={errorSignUp} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>Hubo un error al registrar el usuario.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-end" className="p-3">
+      <Toast onClose={() => setSuccessSignIn(false)} show={successSignIn} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">NOTIFICACIÓN</strong>
+        </Toast.Header>
+        <Toast.Body>Inicio de sesión correcto.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-end" className="p-3">
+      <Toast onClose={() => setFailedSignIn(false)} show={failedSignIn} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>Datos de inicio de sesión incorrectos.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
   </body>
   );
 }

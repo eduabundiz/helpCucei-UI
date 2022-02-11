@@ -25,6 +25,7 @@ app.get('/', (req, res) =>{
 app.get('/api/get', (req, res) =>{
     const sqlStatement= "SELECT * FROM usuarios";
     db.query(sqlStatement, (err, result) =>{
+        console.log("RESULT: ",result);
         res.send(result);
     });
 });
