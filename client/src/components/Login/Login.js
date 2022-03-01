@@ -4,6 +4,7 @@ import helpCuceiLogo from '../../assets/helpqci.png'
 import React, { useEffect, useState } from 'react';
 import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
+import md5 from 'crypto-js/md5'
 
 function Login() {
   const navigate = useNavigate()
@@ -62,8 +63,6 @@ function Login() {
     //VALIDACIÓN CORREO YA REGISTRADO
     var flag = 0;
     users.forEach( (e) =>{
-      console.log("E:",e);
-      console.log("e.correo:",e.correo," | handleEmail:",signUpData.email);
       if (e.correo === signUpData.email){
         flag = 1;
         setEmailCheck(true)
@@ -128,8 +127,8 @@ function Login() {
     signInData.email=obj.target.value
   }
   function handleSignInPassword(obj){
-    console.log("handleSignInPassword: ",obj.target.value)
-    signInData.password=obj.target.value
+    console.log("handleSignInPassword: ",md5(obj.target.value).toString())
+    signInData.password=md5(obj.target.value).toString();
   }
   function handleName(obj){
     console.log("handleName: ",obj.target.value)
@@ -160,12 +159,12 @@ function Login() {
     signUpData.email=obj.target.value
   }
   function handlePassword(obj){
-    console.log("handlePassword: ",obj.target.value)
-    signUpData.password=obj.target.value
+    console.log("handlePassword: ",md5(obj.target.value).toString())
+    signUpData.password=md5(obj.target.value).toString();
   }
   function checkPassword(obj){
     console.log("checkPassword: ",obj.target.value)
-    setPassword(obj.target.value)
+    setPassword(md5(obj.target.value).toString());
   }
 
   function showSignUpData(){
