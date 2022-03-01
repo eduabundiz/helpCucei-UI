@@ -8,20 +8,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const db = mysql.createPool({
-    host: '34.136.248.183',
+    host: 'localhost',
     user: 'root',
-    password: '123456',
-    database: 'helpcucei'
+    password: '1234',
+    database: 'helpcuceidb'
 });
 
-/*
-app.get('/', (req, res) =>{
-    const sqlStatement = "INSERT INTO carreras (nombre) VALUES ('Ingeniería Robótica');"
-    db.query(sqlStatement, (err, result) => {
-        res.send("HELLO WORLD, SERVER LISTENING");
-    })
-});
-*/
 app.get('/api/get', (req, res) =>{
     const sqlStatement= "SELECT * FROM usuarios";
     db.query(sqlStatement, (err, result) =>{
@@ -44,7 +36,7 @@ app.post('/api/insert', (req,res) => {
         idCarrera: req.body.career
     }
     console.log("DATA: ",data);
-    const sqlStatement = "INSERT INTO usuarios (nombre, apellidoP, apellidoM, fechaNacimiento, correo, contraseña, rol, fechaIngreso, idCarrera) VALUES (?,?,?,?,?,?,?,?,?);"
+    const sqlStatement = "INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, correo, contraseña, rol, fechaIngreso, idCarrera) VALUES (?,?,?,?,?,?,?,?,?);"
     db.query(sqlStatement, [data.nombre, data.apellidoP, data.apellidoM, data.fechaNacimiento, data.correo, data.contraseña, data.rol, data.fechaIngreso, data.idCarrera], (err, result) => {
         console.log(err);
     });

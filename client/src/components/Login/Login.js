@@ -1,10 +1,13 @@
 import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
 import './Login.css';
-import helpCuceiLogo from '../assets/helpqci.png'
+import helpCuceiLogo from '../../assets/helpqci.png'
 import React, { useEffect, useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 
 function Login() {
+  const navigate = useNavigate()
+
 
   //NOTIFICACIONES
   const [passwordCheck, setPasswordCheck] = useState(false);
@@ -76,6 +79,7 @@ function Login() {
         alert('successful insert')
       });
       setShow(false)
+      setSuccessSignUp(true);
     }catch{
       console.log("ERROR CATCH");
       setErrorSignUp(true);
@@ -109,6 +113,7 @@ function Login() {
     users.forEach( (e) =>{
       if (e.correo === signInData.email && e.contraseña === signInData.password){
         setSuccessSignIn(true);
+        navigate('/profile/'+ e.id)
         flag = 1;
         return;
       };
@@ -169,7 +174,7 @@ function Login() {
   }
 
   return (
-    <body>
+    <div>
     <div id="card">
       <div id="card-content">
         <div id="card-title">
@@ -178,13 +183,13 @@ function Login() {
           <div className='LoginForm'>
           <Form>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>CORREO ELECTRÓNICO</Form.Label>
-              <Form.Control className='formControl' type="email" placeholder="Ingrese su correo electrónico" onChange={(value)=>handleSignInEmail(value)}/>
+              <Form.Label>Correo electrónico</Form.Label>
+              <Form.Control className='formControl' type="email" onChange={(value)=>handleSignInEmail(value)}/>
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>CONTRASEÑA</Form.Label>
-              <Form.Control className='formControl' type="password" placeholder="ingrese su contraseña" onChange={(value)=>handleSignInPassword(value)}/>
+              <Form.Label>Contraseña</Form.Label>
+              <Form.Control className='formControl' type="password" onChange={(value)=>handleSignInPassword(value)}/>
               <a  className='linkToPassword' href="App.js" title="Forgot Password">* olvidé mi contraseña</a>
             </Form.Group>
             <Form.Group className="FooterButtons">
@@ -255,14 +260,11 @@ function Login() {
           </Form.Group>
         </Form>
       </Modal.Body>
-      <Modal.Footer>
-      <Button variant="secondary" className='FormButtonPure' onClick={doubleOnClick}>
-          Try
-        </Button>
+      <Modal.Footer className='signupfooter'>
         <Button variant="secondary" className='FormButtonPure' onClick={handleClose}>
           Cancelar
         </Button>
-        <Button variant="primary" className='FormButtonPure' onClick={signUpUser}>
+        <Button variant="primary" className='FormButtonPure addmarginleft' onClick={signUpUser}>
           Registrarse
         </Button>
       </Modal.Footer>
@@ -367,7 +369,7 @@ function Login() {
       </Toast>
     </ToastContainer>
 
-  </body>
+  </div>
   );
 }
 

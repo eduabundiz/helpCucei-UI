@@ -1,7 +1,12 @@
 
 body {
-    background: rgb(128, 179, 255);
-    background: linear-gradient(90deg, rgb(128, 179, 255) 0%, rgb(13, 110, 253) 100%);
+    color: rgb(49, 49, 49) !important;
+    background: rgb(236, 236, 236) !important;
+    background-image: url("../../assets/background.png") !important;
+    background-position: center !important;
+    background-repeat: no-repeat;
+    background-size:cover;
+    position: relative;
 }
 label {
 font-family: "Raleway", sans-serif;
@@ -9,12 +14,23 @@ font-size: 11pt;
 }
 #card {
 background: #fbfbfb;
-border-radius: 15px;
-box-shadow: 1px 4px 12px rgba(26, 31, 95, 0.65);
+border-radius: 10px;
+box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
 height: 28rem;
-margin: 8rem auto auto auto;
+margin: 6rem auto auto auto;
 width: 25rem;
 }
+#homeCard {
+    display: inline;
+    justify-content: center;
+    text-align: center;
+    background: #fbfbfb;
+    border-radius: 15px;
+    box-shadow: 1px 4px 12px rgba(26, 31, 95, 0.65);
+    height: 30%;
+    margin: 7% auto auto auto;
+    width: 50%;
+    }
 #card-content {
 padding: 1rem 3rem;
 }
@@ -26,6 +42,10 @@ padding: 1rem 3rem;
     justify-content: center;
     display: flex;
     padding-top: 0.5rem;
+}
+.growbutton{
+    width: 10rem !important;
+    margin-top: 3rem !important; 
 }
 
 .FormButton{
@@ -47,7 +67,7 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
 }
 
 .FormButton:active{
@@ -55,7 +75,7 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
 }
 
 .FormButtonPure{
@@ -74,14 +94,14 @@ padding: 1rem 3rem;
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
 }
 
 .FormButtonPure:active{
     width: 7rem;
     background-color: #757575 !important;
     border-color: #757575 !important;
-    box-shadow: 1px 4px 12px rgba(13, 110, 253, 0.65) !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
 }
 
 .LogoLogin{
@@ -157,7 +177,7 @@ padding: 1rem 3rem;
     text-decoration: none;
 }
 .linkToPassword:hover{
-    color: rgb(13, 110, 253);
+    color: #0d6efd;
 }
 
 .SignUpModalFormLabel{
@@ -192,4 +212,87 @@ padding: 1rem 3rem;
 
 .modal-content{
     border-radius: 15px !important;
+}
+
+.navigationLink{
+    color: rgb(49, 49, 49);
+    text-decoration: none;
+}
+.navigationLink:hover{
+    color: #0d6efd;
+}
+
+.navigationLinkBrand{
+    color: rgb(49, 49, 49);
+    text-decoration: none;
+    font-size: 16pt !important;
+}
+
+.navigationLinkBrand:hover{
+    color: #0d6efd;
+}
+.homeDiv{
+    display: grid;
+    justify-content: center;
+    padding: 8rem 0 0 0;
+    text-align: center;
+}
+.homeImg{
+    margin: 4rem 0 4rem 0;
+    width: 50%;
+    min-width: 10rem;
+}
+
+.homeCardContent{
+    display: flex;
+    justify-content: center;
+}
+.navigation{
+    background: rgb(236, 236, 236);
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+}
+.homeText{
+    color: rgb(49, 49, 49);
+    font-size: 6rem;
+    font-weight: bold;
+}
+.homeTextmin{
+    color: rgb(49, 49, 49);
+    font-size: 2rem;
+}
+.homeLogo{
+    display: inline;
+    justify-content: center;
+    text-align: center;
+}
+.lightbulb{
+    width: 4rem;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.FormButtonIniciar{
+    margin-top: 3rem !important;
+    margin: 1rem;
+    width: 10rem;
+    background-color: #dbdbdb !important;
+    border-color: #dbdbdb !important;
+}
+
+.FormButtonIniciar:hover, .FormButtonIniciar:focus, .FormButtonIniciar:active{
+    margin: 1rem;
+    width: 10rem;
+    background-color: #757575 !important;
+    border-color: #757575 !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
+}
+
+.signupfooter{
+    display: flex;
+    justify-content: center;
+}
+
+.addmarginleft{
+    margin-left: 2rem !important;
 }
