@@ -1,26 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
-import "react-bootstrap"
+import React from 'react'
+import Login from './components/Login/Login'
+import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import Home from './components/Home/Home';
+import Profile from './components/Home/Profile'
+import Navigation from './components/Navigation/Navigation';
+import NotFound from './components/NotFound/NotFound';
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <Navigation/>
+      <Routes>
+        <Route path='/' element={<Home/>} exact/>
+        <Route path='/login' element={<Login/>} exact/>
+        <Route path='/home' element={<Home/>}/>
+        <Route path='/profile/:user' element={<Profile/>}/>
+        <Route path='*' element={<NotFound/>}/>
+      </Routes>
+    </Router>
+  )
 }
 
-export default App;
