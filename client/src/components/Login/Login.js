@@ -1,13 +1,30 @@
 import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
+import {notification} from 'antd';
 import './Login.css';
 import helpCuceiLogo from '../../assets/helpqci.png'
 import React, { useEffect, useState } from 'react';
-import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
 import md5 from 'crypto-js/md5'
+import PropTypes from 'prop-types';
 
-function Login() {
-  const navigate = useNavigate()
+
+async function loginUser(credentials) {
+  try{
+    return fetch('http://localhost:3001/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(credentials)
+  })
+    .then((data) => data.json())
+  }catch{
+    console.log("ERROR");
+  }
+ }
+
+export default function Login({setToken}) {
+  //const navigate = useNavigate()
 
 
   //NOTIFICACIONES
@@ -33,12 +50,11 @@ function Login() {
     ingressDate: "",
     email: "",
     password: "",
-    rol: "Estudiante"
+    rol: "Estudiante",
+    signUpDate: ""
   });
-  const [signInData, setSignInData] = useState({
-    email: "",
-    password: ""
-  });
+  const [username, setUserName] = useState();
+  const [password2, setPassword2] = useState();
 
   const signUpUser = () =>{
     //VALIDACIÓN CAMPOS VACÍOS
@@ -73,6 +89,9 @@ function Login() {
     }
     //PETICIÓ POST PARA REGISTRAR USUARIO
     try{
+      const current = new Date();
+      const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+      signUpData.signUpDate = date;
       console.log("REGISTRA");
       Axios.post('http://localhost:3001/api/insert',signUpData).then(() => {
         alert('successful insert')
@@ -90,10 +109,22 @@ function Login() {
     getUsers()
   },[])
 
+  const handleSubmit = async e => {
+    e.preventDefault();
+    try{
+    const token = await loginUser({
+      username,
+      password2
+    });
+    setToken(token);
+  }catch{
+    notification.error({ message: 'Datos de inicio de sesión incorrectos'});
+  }
+  }
+  
   function getUsers(){
     try{
       Axios.get('http://localhost:3001/api/get').then((response) => {
-      console.log("RESPONSE: ", response.data);
       setUsers(response.data);
     });
     }catch{
@@ -101,34 +132,13 @@ function Login() {
     }
   }
 
-  function doubleOnClick(){
-    setEmailCheck(true);
-    showSignUpData();
-  }
-
-  function checkSignIn(){
-    console.log("SignInData: ",signInData);
-    let flag = 0;
-    users.forEach( (e) =>{
-      if (e.correo === signInData.email && e.contraseña === signInData.password){
-        setSuccessSignIn(true);
-        navigate('/profile/'+ e.id)
-        flag = 1;
-        return;
-      };
-    });
-    if(flag === 0){
-      setFailedSignIn(true);
-    }
-  }
-
   function handleSignInEmail(obj){
     console.log("handleSignInEmail: ",obj.target.value)
-    signInData.email=obj.target.value
+    setUserName(obj.target.value)
   }
   function handleSignInPassword(obj){
     console.log("handleSignInPassword: ",md5(obj.target.value).toString())
-    signInData.password=md5(obj.target.value).toString();
+    setPassword2(md5(obj.target.value).toString());
   }
   function handleName(obj){
     console.log("handleName: ",obj.target.value)
@@ -167,11 +177,6 @@ function Login() {
     setPassword(md5(obj.target.value).toString());
   }
 
-  function showSignUpData(){
-    console.log("SignUp DATA: ", signUpData)
-    console.log("USERS: ", users);
-  }
-
   return (
     <div>
     <div id="card">
@@ -192,7 +197,7 @@ function Login() {
               <a  className='linkToPassword' href="App.js" title="Forgot Password">* olvidé mi contraseña</a>
             </Form.Group>
             <Form.Group className="FooterButtons">
-              <Button variant="primary" className='FormButton' onClick={checkSignIn}>
+              <Button variant="primary" className='FormButton' onClick={handleSubmit}>
                 Ingresar
               </Button>
               <Button variant="primary" className='FormButton' onClick={handleShow}>
@@ -372,4 +377,6 @@ function Login() {
   );
 }
 
-export default Login;
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
+}
