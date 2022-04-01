@@ -4,10 +4,11 @@ body {
     background: rgb(236, 236, 236) !important;
     background-image: url("../../assets/background.png") !important;
     background-position: center !important;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-size:cover;
     position: relative;
 }
+
 label {
 font-family: "Raleway", sans-serif;
 font-size: 11pt;
@@ -42,6 +43,10 @@ padding: 1rem 3rem;
     justify-content: center;
     display: flex;
     padding-top: 0.5rem;
+}
+.FooterButtonsProfile{
+    justify-content: center;
+    display: flex;
 }
 .growbutton{
     width: 10rem !important;
@@ -122,6 +127,23 @@ padding: 1rem 3rem;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(173, 173, 173, 0.6) !important;
 }
 
+.formControlTextArea{
+    font-size:.9rem !important;
+    border-radius: 10px !important;
+    background-color: white !important;
+    border-color: rgb(187, 187, 187);
+    width: 100%;
+}
+
+.formControlTextArea:active, .formControlTextArea:focus{
+    font-size:.9rem !important;
+    border-radius: 10px !important;
+    background-color: white !important;
+    border-color: rgb(136, 136, 136) !important;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(173, 173, 173, 0.6) !important;
+    width: 100%;
+}
+
 .formControlSignUp{
     font-size:.9rem !important;
     border-radius: 10px !important;
@@ -191,6 +213,15 @@ padding: 1rem 3rem;
 .SignUpModalBody{
     padding: 2rem 3rem 1rem 3rem !important;
     justify-content: center !important;
+    background-color: rgb(236, 236, 236) !important;
+}
+
+.DetailsModalBody{
+    padding: 0 !important;
+    justify-content: center !important;
+    display: block;
+    padding-left: 2rem !important;
+    background-color: rgb(236, 236, 236) !important;
 }
 
 .mb-3SingUp{
@@ -248,25 +279,26 @@ padding: 1rem 3rem;
     justify-content: center;
 }
 .navigation{
+    padding: 0.3rem !important;
     background: rgb(236, 236, 236);
     box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
 }
 .homeText{
     color: rgb(49, 49, 49);
-    font-size: 6rem;
+    font-size: 4rem;
     font-weight: bold;
 }
 .homeTextmin{
     color: rgb(49, 49, 49);
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 .homeLogo{
-    display: inline;
+    display: flex;
     justify-content: center;
     text-align: center;
 }
 .lightbulb{
-    width: 4rem;
+    width: 3rem;
     height: auto;
     display: block;
     margin-left: auto;
@@ -288,6 +320,22 @@ padding: 1rem 3rem;
     box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
 }
 
+.FormButtonSalir{
+    padding: 0 !important;
+    font-weight: bold !important;
+    font-size: small !important;
+    width: 8rem;
+    height: 2rem;
+    background-color: #cecece !important;
+    border-color: #cecece !important;
+}
+
+.FormButtonSalir:hover, .FormButtonSalir:focus, .FormButtonSalir:active{
+    background-color: #757575 !important;
+    border-color: #757575 !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
+}
+
 .signupfooter{
     display: flex;
     justify-content: center;
@@ -295,4 +343,312 @@ padding: 1rem 3rem;
 
 .addmarginleft{
     margin-left: 2rem !important;
+}
+
+.postCard{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fbfbfb;
+    max-width: 40rem;
+    min-width: 40rem;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    padding: 2rem;
+    margin: 3rem;
+}
+
+.postCardInfo{
+    text-align: justify;
+}
+
+.postInfo{
+    margin-top: 2rem;
+    line-height: 1.5;
+}
+
+.postImage{
+    margin: 1rem 0 1rem 0;
+    width: 100%;
+    min-width: 10rem;
+    background-repeat: no-repeat;
+    background-size:cover;
+    position: relative;
+    border-radius: 10px;
+}
+.navigationBlog{
+    color: rgb(49, 49, 49);
+    text-decoration: none;
+    margin-left: 3rem;
+}
+.navigationBlog:hover{
+    color: #0d6efd;
+}
+
+.navigationBlogDropDown{
+    color: rgb(49, 49, 49);
+    text-decoration: none;
+}
+.navigationBlogDropDown:hover{
+    color: #0d6efd;
+}
+
+.navigationQuestions{
+    color: rgb(49, 49, 49);
+    text-decoration: none;
+}
+.navigationQuestions:hover{
+    color: #0d6efd;
+}
+
+.qandblog{
+    margin-left: 3rem;
+    background-color: #0d6efd;
+}
+
+.createPost{
+    display: block;
+}
+
+.FormButtonCrearPost{
+    margin-top: 3rem;
+    width: 5rem;
+    background-color: #bdd7ff !important;
+    border-color: #bdd7ff !important;
+}
+
+.FormButtonCrearPost:hover, .FormButtonCrearPost:focus, .FormButtonCrearPost:active{
+    background-color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    box-shadow: 1px 4px 12px rgba(150, 150, 150, 0.65) !important;
+}
+.postWidget{
+    background-color: #fbfbfb;
+    max-width: 20rem;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    padding: 2rem;
+    margin-top: 3rem;
+}
+.pwl2{
+    border-radius: 5px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+    padding: 0.2rem;
+}
+.pwl2:hover{
+    background: rgb(255,255,255);
+    background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(240,240,240,1) 100%);
+}
+.pwl3{
+    margin-right: 1rem;
+}
+.pwimg{
+    border-radius: 50px;
+}
+
+.pwp{
+    font-size: small;
+    color: #757575;
+    margin: 0;
+}
+
+.linkToPost{
+    margin: 0;
+    font-size: small;
+    color: rgb(90, 90, 90);
+    text-decoration: none;
+}
+.linkToPost:hover{
+    color: #0d6efd;
+}
+.linkToCategory{
+    margin: 0;
+    font-size: small;
+    color: rgb(90, 90, 90);
+    text-decoration: none;
+}
+.linkToCategory:hover{
+    color: #0d6efd;
+    font-weight: bold;
+}
+.categoryWidget{
+    background-color: #fbfbfb;
+    min-width: 20rem !important;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    padding: 2rem;
+    margin-top: 3rem;
+}
+.cwl2{
+    padding: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+}
+
+.checkPostTableDiv{
+    display: block;
+    justify-content: center;
+    align-items: baseline;
+    background-color: #fbfbfb;
+    width: 60rem !important;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    padding: 2rem;
+    margin: 3rem;
+}
+
+.revisarButton{
+    height: 1.5rem;
+    padding: 0 !important;
+    font-size: smaller !important;
+    width: 7rem;
+    background-color: #afafaf !important;
+    border-color: #afafaf !important;
+}
+
+.revisarButton:hover, .revisarButton:focus, .revisarButton:active{
+    background-color: #757575 !important;
+    border-color: #757575 !important;
+}
+
+th.documents-column-css {
+    text-align: left !important;
+    padding: 0rem 1rem 0rem 1rem;
+    background-color:rgb(255, 255, 255) !important;
+    color: rgb(31, 31, 31) !important;
+}
+
+.checkPostTable{
+    width: 100%;
+}
+
+.textCenter {
+    text-align: center !important;
+}
+
+.textJustify{
+    text-align: justify !important;
+}
+
+.modalRevisar{
+    padding: 0 !important;
+    align-items: center;
+    border-radius: 10px !important;
+    background-color: #757575 !important;
+}
+
+#cardprofile {
+    background: #fbfbfb;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    height: 36rem;
+    margin: 3rem auto 3rem auto;
+    width: 30rem;
+}
+#card-content-profile {
+    padding: 1rem 3rem;
+}
+#card-title-profile {
+    padding: 1rem 1rem 1rem 1rem;
+    text-align: center;
+}
+
+.FormButtonProfile{
+    height: 2rem;
+    padding: 0 !important;
+    margin: 0.5rem;
+    background-color: #afafaf !important;
+    border-color: #afafaf !important;
+}
+
+.FormButtonProfile:hover, .FormButtonProfile:focus, .FormButtonProfile:active{
+    background-color: #757575 !important;
+    border-color: #757575 !important;
+    box-shadow: none !important;
+}
+
+.postcardfooter{
+    display: flex;
+    align-items: baseline;
+    justify-content: end;
+}
+
+.buttonComentarios{
+    height: 2rem;
+    padding: 0 !important;
+    margin: 0 0 0 2rem;
+    width: 7rem !important;
+}
+
+.commentsWidget{
+    background-color: #fbfbfb;
+    width: 40rem;
+    margin-left: 3rem;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 1px 4px 12px rgba(216, 216, 216, 0.65);
+    padding: 2rem;
+    margin-bottom: 2rem !important;
+}
+.commentswl2{
+    border-radius: 5px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    align-content: center;
+    margin: 0;
+    padding: 0.2rem;
+}
+.commentswl3{
+    margin-right: 1rem;
+}
+.commentswimg{
+    border-radius: 50px;
+}
+
+.commentswp{
+    font-size: small;
+    color: #757575;
+    margin: 0;
+}
+
+.commentslinkToPost{
+    margin: 0;
+    font-size: small;
+    color: rgb(90, 90, 90);
+    text-decoration: none;
+}
+
+.commentslinkToUser{
+    margin: 0;
+    font-size: small;
+    color:#0d6efd;
+    text-decoration: none;
+}
+
+.commentStyle{
+    background-color: rgb(236, 236, 236);
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border-radius: 10px;
+}
+
+.commentStyle:hover{
+    background-color: rgb(214, 214, 214);
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    margin-left: 1rem;
+    border-radius: 10px;
 }
