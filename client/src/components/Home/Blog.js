@@ -7,6 +7,7 @@ import Axios from 'axios';
 
 export default function Blog({token}) {
     const [emptyCheck, setEmptyCheck] = useState(false);
+    const [noComment, setNoComment] = useState(false);
     const [errorSignUp, setErrorSignUp] = useState(false);
     const [successSignUp, setSuccessSignUp] = useState(false);
     const navigate = useNavigate()
@@ -21,7 +22,6 @@ export default function Blog({token}) {
     const handleClose2 = () => setShow2(false);
     const handleShow2 = () => setShow2(true);
 
-    const [postComment, setPostComment] = useState();
     const [socialAreas, setSocialAreas] = useState([]);
     const [carreras, setCarreas] = useState([]);
     const [comments, setComments] = useState([]);
@@ -38,6 +38,16 @@ export default function Blog({token}) {
         status: 1,
         estadoAprobacion: "PENDIENTE"
       });
+
+    const [postComment, setPostComment] =useState({
+      idUsuario: "",
+      contenido: "",
+      fecha: "",
+      idPost: "",
+      comentario: "",
+      status: 1,
+      estadoAprobacion: "APROBADO"
+    });
 
       function handleTitle(obj){
         console.log("handleTitle: ",obj.target.value)
@@ -61,11 +71,37 @@ export default function Blog({token}) {
       }
       function handlePostComment(obj){
         console.log("handlePostComment: ",obj.target.value)
-        setPostComment(obj.target.value);
+        postComment.contenido = obj.target.value;
+        //setPostComment(obj.target.value);
       }
       function handleImgUrl(obj){
         console.log("handleImgUrl: ",obj.target.value)
         postData.imgurl=obj.target.value
+      }
+
+      const sendComment = () =>{
+        console.log("ENTRA")
+        postComment.idUsuario = user.id;
+        postComment.idPost = post.id;
+        const current = new Date();
+        const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
+        postComment.fecha=date
+        if(postComment.contenido === ''){
+          setNoComment(true);
+          return;
+        }else{
+          try{
+            console.log("ENVÍA COMMENT");
+            Axios.post('http://localhost:3001/api/comments/insert',postComment).then(() => {
+              alert('successful insert')
+            })
+            getComments(post.id);
+          }catch{
+            console.log("ERROR CATCH");
+          }
+        }
+        setShow2(false);
+        notification.success({ message: 'Comentario enviado'})
       }
 
       const sendPost = () =>{
@@ -117,7 +153,7 @@ export default function Blog({token}) {
                 <div className='postcardfooter'>
                   <h6 style={{color:"#0d6efd"}}>{post.nombreAreaSocial}</h6>
                   <h6 style={{marginLeft:"2rem", color:"#c0c0c0"}}>{post.nombreCarrera}</h6>
-                  <Button className='buttonComentarios' onClick={()=> {setPost(post); handleShow2();}}>Comentarios</Button>
+                  <Button className='buttonComentarios' onClick={()=> {setPost(post); getComments(post.id); handleShow2();}}>Comentarios</Button>
                 </div>
               </div>
             </div>
@@ -185,16 +221,21 @@ async function getUser(){
     }
   }
 
-  function getComments(){
+  function getComments(id){
+    console.log("comment post id ",id);
     try{
-      Axios.get('http://localhost:3001/api/comments/get').then((response) => {
+      Axios.get('http://localhost:3001/api/comments/get', {params:{id: id}}).then((response) => {
       console.log("GetComments: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
         setComments([{
+          nombre: "",
+          apellidoPaterno: "",
+          apellidoMaterno: "",
           contenido: "No hay comentarios para esta publicación",
           status: 1,
-          estadoAprobacion: "PENDIENTE"
+          estadoAprobacion: "PENDIENTE",
+          fecha: ""
         }])
       }else{setComments(verifiedPosts.reverse());}
     });
@@ -239,7 +280,6 @@ async function getUser(){
   }
 
   useEffect(() =>{
-    getComments()
     getCarreras()
     getSocialAreas()
     getPosts()
@@ -271,7 +311,7 @@ async function getUser(){
             <Form.Control className='formControlSignUp' type="text" placeholder="Título*" onChange={(value)=>handleTitle(value)}/>
             </Form.Group>
             <Form.Group className="mb-3SingUp" style={{width:"50%"}} controlId="formBasicContent">
-            <textarea class="formControlTextArea" rows="8" placeholder='Contenido*' onChange={(value)=>handleContent(value)}/>
+            <textarea className="formControlTextArea" rows="8" placeholder='Contenido*' onChange={(value)=>handleContent(value)}/>
             </Form.Group>
             <Form.Group className="mb-3SingUp" controlId="formBasicUrlImage">
             <Form.Control className='formControlSignUp' type="text" placeholder="Url Imagen" onChange={(value)=>handleImgUrl(value)}/>
@@ -410,16 +450,13 @@ async function getUser(){
           <div className="commentsWidget">
             <h6 style={{marginBottom:"2rem"}}>Deja tu comentario:</h6>
               <div>
-                <Form className='SignUpForm'>
+                <Form id='commentForm' className='SignUpForm'>
                   <Form.Group className="mb-3SingUp" style={{width:"50%"}} controlId="formBasicContent">
-                    <textarea class="formControlTextArea" rows="3" placeholder='Comentario:' onChange={(value)=>handlePostComment(value)}/>
+                    <textarea defaultValue={''} className="formControlTextArea" rows="3" placeholder='Comentario:' onChange={(value)=>handlePostComment(value)}/>
                   </Form.Group>
                   <Form.Group className="FooterButtonsProfile" style={{marginTop:"1rem"}}>
-                    <Button variant="primary" className='FormButtonProfile' style={{width:"100%"}}>
+                    <Button variant="primary" className='FormButtonProfile' style={{width:"100%"}} onClick={sendComment}>
                       Enviar Comentario
-                    </Button>
-                    <Button variant="primary" className='FormButtonProfile' style={{width:"100%"}}>
-                      Borrar
                     </Button>
                   </Form.Group>
                 </Form>
@@ -442,10 +479,22 @@ async function getUser(){
         <Button variant="secondary" className='FormButtonPure' onClick={handleClose2}>
             Volver
         </Button>
-        <Button variant="primary" className='FormButtonPure addmarginleft'>
-            Comentar
-        </Button>
         </Modal.Footer>
+
+        <ToastContainer position="middle-center" className="p-3">
+        <Toast onClose={() => setNoComment(false)} show={noComment} delay={2000} autohide>
+            <Toast.Header>
+            <img
+                src="holder.js/20x20?text=%20"
+                className="rounded me-2"
+                alt=""
+            />
+            <strong className="me-auto">ERROR</strong>
+            </Toast.Header>
+            <Toast.Body>Primero escribe un comentario *.</Toast.Body>
+        </Toast>
+        </ToastContainer>
+
         </Modal>
     </div>
   )
