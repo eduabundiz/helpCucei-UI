@@ -161,7 +161,7 @@ export default function Blog({token}) {
     )
 }
 const PostWidget = () =>{
-  const items = posts.slice(0, 4)
+  const items = posts.slice(0, 3)
   return(
       <div className="postWidget">
         <h6 style={{marginBottom:"2rem"}}>Publicaciones Recientes:</h6>
@@ -178,7 +178,7 @@ const PostWidget = () =>{
             </div>
             <div>
               <p className='pwp'>{post.fecha}</p>
-              <a  className='linkToPost' href="">{post.titulo}</a>
+              <Button className='postwidgetbutton' onClick={()=> {setPost(post); getComments(post.id); handleShow2();}}>{post.titulo}</Button>
             </div>
           </div>
         ))}
@@ -189,9 +189,10 @@ const CategoryWidget = () =>{
   return(
       <div className="categoryWidget">
         <h6 style={{marginBottom:"1rem"}}>Categorías:</h6>
+        <Button className='postcategorybutton' onClick={()=> {getPosts()}}>* Todas</Button>
         {socialAreas.map((sa)=>(
           <div className='cwl2'>
-            <a  className='linkToCategory' href="">{sa.nombre}</a>
+            <Button className='postcategorybutton' onClick={()=> {getCategoryPosts(sa.nombre)}}>{sa.nombre}</Button>
           </div>
         ))}
       </div>
@@ -247,6 +248,33 @@ async function getUser(){
   function getPosts(){
     try{
       Axios.get('http://localhost:3001/api/posts/get').then((response) => {
+      console.log("GetPosts: ", response.data);
+      const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
+      if(verifiedPosts.length<=0){
+        setPosts([{
+          idUsuario: "1",
+          titulo: "No hay publicaciones",
+          contenido: "",
+          carrera: "",
+          areasocial: "",
+          comentario: "",
+          imgurl: "https://us.123rf.com/450wm/blankstock/blankstock1409/blankstock140900061/31369711-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-c%C3%ADrculo-bot%C3%B3n-plan.jpg?ver=6",
+          fecha: "",
+          status: 1,
+          estadoAprobacion: "PENDIENTE"
+        }])
+      }else{setPosts(verifiedPosts.reverse());}
+    });
+    }catch{
+      console.log("ERROR GETTING POSTS")
+    }
+  }
+
+  function getCategoryPosts(socialArea){
+    try{
+      Axios.get('http://localhost:3001/api/posts/categoryposts',{
+        params: {socialArea: socialArea}
+      }).then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){

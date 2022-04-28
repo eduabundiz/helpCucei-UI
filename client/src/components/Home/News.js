@@ -9,9 +9,15 @@ export default function News({token}) {
     const [errorSignUp, setErrorSignUp] = useState(false);
     const [successSignUp, setSuccessSignUp] = useState(false);
     const [user, setUser] = useState({});
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [show2, setShow2] = useState(false);
+    const handleClose2 = () => setShow2(false);
+    const handleShow2 = () => setShow2(true);
+
+    const [post, setPost] = useState({});
     const [socialAreas, setSocialAreas] = useState([]);
     const [carreras, setCarreas] = useState([]);
     const [posts, setPosts] = useState([]);
@@ -86,7 +92,7 @@ export default function News({token}) {
 
   const PostCard = ({post}) =>{
     return(
-        <div className="postCard">
+        <div onClick={()=> {setPost(post); handleShow2();}} className="postCard">
             <div className="postCardContent">
               <div className='postCardTitle'>
                 <h5 style={{marginBottom:"1rem"}}>{post.tema}</h5>
@@ -108,7 +114,7 @@ export default function News({token}) {
     )
 }
 const PostWidget = () =>{
-  const items = posts.slice(0, 4)
+  const items = posts.slice(0, 3)
   return(
       <div className="postWidget">
         <h6 style={{marginBottom:"2rem"}}>Noticias Recientes:</h6>
@@ -125,7 +131,7 @@ const PostWidget = () =>{
             </div>
             <div>
               <p className='pwp'>{post.fechaInicio.toString().slice(0,10)}</p>
-              <a  className='linkToPost' href="">{post.tema}</a>
+              <Button className='postwidgetbutton' onClick={()=> {setPost(post); handleShow2();}}>{post.tema}</Button>
             </div>
           </div>
         ))}
@@ -136,9 +142,10 @@ const CategoryWidget = () =>{
   return(
       <div className="categoryWidget">
         <h6 style={{marginBottom:"1rem"}}>Categorías:</h6>
+        <Button className='postcategorybutton' onClick={()=> {getPosts()}}>* Todas</Button>
         {socialAreas.map((sa)=>(
           <div className='cwl2'>
-            <a  className='linkToCategory' href="">{sa.nombre}</a>
+            <Button className='postcategorybutton' onClick={()=> {getCategoryPosts(sa.nombre)}}>{sa.nombre}</Button>
           </div>
         ))}
       </div>
@@ -193,6 +200,33 @@ const CategoryWidget = () =>{
     }
   }
 
+  function getCategoryPosts(socialArea){
+    try{
+      Axios.get('http://localhost:3001/api/news/categorynew',{
+        params: {socialArea: socialArea}
+      }).then((response) => {
+      console.log("GetPosts: ", response.data);
+      const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
+      if(verifiedPosts.length<=0){
+        setPosts([{
+          tema: "No hay noticias",
+          contenido: "",
+          fechaInicio: "",
+          fechaFin: "",
+          prioridad: 1,
+          referencia: "",
+          areasocial: "",
+          imgurl: "https://us.123rf.com/450wm/blankstock/blankstock1409/blankstock140900061/31369711-signo-de-interrogaci%C3%B3n-signo-icono-s%C3%ADmbolo-de-ayuda-signo-de-preguntas-frecuentes-c%C3%ADrculo-bot%C3%B3n-plan.jpg?ver=6",
+          status: 1,
+          estadoAprobacion: "PENDIENTE"
+        }])
+      }else{setPosts(verifiedPosts.reverse());}
+    });
+    }catch{
+      console.log("ERROR GETTING POSTS")
+    }
+  }
+
   function getSocialAreas(){
     try{
       Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
@@ -213,7 +247,7 @@ const CategoryWidget = () =>{
   return (
     <div style={{display: "flex", justifyContent: "center"}}>
         <div className='createPost'>
-            <Button hidden={(user.rol >= 'Supervisor') ? false : true} variant="primary" className='FormButtonCrearPost' onClick={handleShow}>
+            <Button hidden={(user.rol === 'Supervisor' || user.rol ==='Administrador' || user.rol === 'Coordinador') ? false : true} variant="primary" className='FormButtonCrearPost' onClick={handleShow}>
                 CREAR NOTICIA
             </Button>
         </div>
@@ -330,6 +364,40 @@ const CategoryWidget = () =>{
             <Toast.Body>Hubo un error al crear la Noticia.</Toast.Body>
         </Toast>
         </ToastContainer>
+
+        <Modal className='SignUpModal' size='lg' show={show2} onHide={handleClose2} keyboard={false}>
+        <Modal.Header className='SignUpModalHeader'>
+        <Modal.Title>Detalles</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className='DetailsModalBody'>
+          <div className="postCard">
+              <div className="postCardContent">
+                <div className='postCardTitle'>
+                  <h5 style={{marginBottom:"1rem"}}>{post.tema}</h5>
+                </div>
+                <div className='postCardInfo'>
+                  <p className='postInfo'>{post.contenido}</p>
+                </div>
+                <div>
+                  <img src={post.imgurl}
+                  className='postImage'
+                  />
+                  <a  className='linkToPassword' href={post.referencia} title="Forgot Password">{post.referencia}</a>
+                  <div style={{textAlign:"right"}}>
+                    <h6 style={{color:"#0d6efd"}}>{post.nombreAreaSocial}</h6>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer className='signupfooter'>
+        <Button variant="secondary" className='FormButtonPure' onClick={handleClose2}>
+            Volver
+        </Button>
+        </Modal.Footer>
+
+        </Modal>
+
     </div>
   )
 }

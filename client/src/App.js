@@ -7,6 +7,7 @@ import CheckPosts from './components/Home/CheckPosts';
 import CheckNews from './components/Home/checkNews';
 import News from './components/Home/News';
 import Profile from './components/Home/Profile'
+import UsersManagement from './components/Home/UsersManagement';
 import Navigation from './components/Navigation/Navigation';
 import NotFound from './components/NotFound/NotFound';
 import useToken from './useToken.js'
@@ -31,6 +32,7 @@ export default function App() {
         <Route path='/checknews' element={<CheckNews/>}/>
         <Route path='/news' element={<News token={token}/>}/>
         <Route path='/profile' element={<Profile token={token}/>}/>
+        <Route path='/usersmanagement' element={<UsersManagement token={token}/>}/>
         <Route path='*' element={<NotFound/>}/>
       </Routes>
     </Router>
