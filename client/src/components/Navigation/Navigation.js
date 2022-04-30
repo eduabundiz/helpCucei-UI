@@ -48,7 +48,7 @@ export default function Navigation({token}) {
           <Nav.Link>
             <Link className='navigationBlog' style={{marginRight:"3rem"}} to="/news">NOTICIAS</Link>
           </Nav.Link>
-          <NavDropdown title="SUPERVISOR" id="collasible-nav-dropdown" hidden={(user.rol >= 'Supervisor') ? false : true}>
+          <NavDropdown title="SUPERVISOR" id="collasible-nav-dropdown" hidden={(user.rol === 'Supervisor' || user.rol === 'Administrador') ? false : true}>
             <NavDropdown.Item>
               <Link className='navigationBlogDropDown' to="/checkposts">REVISAR POSTS</Link>
             </NavDropdown.Item>
@@ -56,6 +56,9 @@ export default function Navigation({token}) {
               <Link className='navigationBlogDropDown' to="/checknews">REVISAR NOTICIAS</Link>
             </NavDropdown.Item>
           </NavDropdown>
+          <Nav.Link hidden={(user.rol === 'Administrador') ? false : true}>
+            <Link className='navigationBlog' to="/usersmanagement">USUARIOS</Link>
+          </Nav.Link>
         </Nav>
         <Nav>
           <Nav.Link>

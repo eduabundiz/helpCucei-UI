@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 async function loginUser(credentials) {
   try{
-    return fetch('http://localhost:3001/login', {
+    return fetch('http://localhost:3001/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -28,6 +28,7 @@ export default function Login({setToken}) {
 
 
   //NOTIFICACIONES
+  const [shortPassword, setShortPassword] = useState(false);
   const [passwordCheck, setPasswordCheck] = useState(false);
   const [emailCheck, setEmailCheck] = useState(false);
   const [emptyCheck, setEmptyCheck] = useState(false);
@@ -40,6 +41,7 @@ export default function Login({setToken}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [pass, setPass] = useState();
   const [password, setPassword] = useState();
   const [signUpData, setSignUpData] =useState({
     name: "",
@@ -71,6 +73,12 @@ export default function Login({setToken}) {
       setEmptyCheck(true);
       return;
     }
+    //CONTRASEÑA 8 CARACTERES MIN
+    if(pass.length < 8){
+      setShortPassword(true)
+      return;
+    }
+
     //VALIDACIÓN CONTRASEÑAS COINCIDEN
     if(signUpData.password !== password){
       setPasswordCheck(true)
@@ -171,6 +179,7 @@ export default function Login({setToken}) {
   function handlePassword(obj){
     console.log("handlePassword: ",md5(obj.target.value).toString())
     signUpData.password=md5(obj.target.value).toString();
+    setPass(obj.target.value);
   }
   function checkPassword(obj){
     console.log("checkPassword: ",obj.target.value)
@@ -194,7 +203,7 @@ export default function Login({setToken}) {
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Contraseña</Form.Label>
               <Form.Control className='formControl' type="password" onChange={(value)=>handleSignInPassword(value)}/>
-              <a  className='linkToPassword' href="App.js" title="Forgot Password">* olvidé mi contraseña</a>
+              {/*<a  className='linkToPassword' href="App.js" title="Forgot Password">* olvidé mi contraseña</a>*/}
             </Form.Group>
             <Form.Group className="FooterButtons">
               <Button variant="primary" className='FormButton' onClick={handleSubmit}>
@@ -284,6 +293,20 @@ export default function Login({setToken}) {
           <strong className="me-auto">ERROR</strong>
         </Toast.Header>
         <Toast.Body>las contraseñas no coinciden.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-center" className="p-3">
+      <Toast onClose={() => setShortPassword(false)} show={shortPassword} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>La contraseña debe tener 8 caracteres como mínimo.</Toast.Body>
       </Toast>
     </ToastContainer>
 
