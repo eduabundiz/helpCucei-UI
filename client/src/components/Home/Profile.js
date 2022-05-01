@@ -3,6 +3,7 @@ import { Button, Form, Modal} from 'react-bootstrap';
 import {message, notification} from 'antd';
 import Axios from 'axios';
 import md5 from 'crypto-js/md5'
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Profile({token}) {
 
@@ -28,7 +29,7 @@ export default function Profile({token}) {
 
   async function getUser(){
     try{
-      await Axios.get('http://localhost:3001/api/getfulluser',{
+      await Axios.get(SERVICES_URL+'/api/getfulluser',{
         params: {correo: token}
       }
       ).then((response) => {
@@ -43,7 +44,7 @@ export default function Profile({token}) {
   function updateProfileData(){
     console.log("NewUserData: ", user);
     try{
-      Axios.put('http://localhost:3001/api/user/update',{user: user}).then((response) => {
+      Axios.put(SERVICES_URL+'/api/user/update',{user: user}).then((response) => {
         console.log("response: ",response.data);
     });
     }catch{
@@ -61,7 +62,7 @@ export default function Profile({token}) {
     if(password === signUpData.password){
       notification.success({ message: 'Las contraseñas coinciden'});
       try{
-        Axios.put('http://localhost:3001/api/password/update',{password: password, id: user.id}).then((response) => {
+        Axios.put(SERVICES_URL+'/api/password/update',{password: password, id: user.id}).then((response) => {
           console.log("response: ",response.data);
       });
       }catch{

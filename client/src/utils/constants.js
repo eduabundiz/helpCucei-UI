@@ -1,0 +1,1 @@
+export const SERVICES_URL = 'https://helpcucei-services.herokuapp.com';

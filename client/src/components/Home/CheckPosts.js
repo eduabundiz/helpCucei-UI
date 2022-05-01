@@ -4,6 +4,7 @@ import {notification} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Blog() {
     const [emptyCheck, setEmptyCheck] = useState(false);
@@ -36,7 +37,7 @@ export default function Blog() {
       const changePostStatus = (estado) =>{
         console.log("Estado: ",estado, " | ",post.id);
         try{
-            Axios.put('http://localhost:3001/api/posts/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
+            Axios.put(SERVICES_URL+'/api/posts/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
               console.log("status: ",response.data);
           });
           }catch{
@@ -62,7 +63,7 @@ export default function Blog() {
   }
   function getSocialAreas(){
     try{
-      Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
       setSocialAreas(response.data);
       console.log("areas sociales: ",response.data);
     });
@@ -73,7 +74,7 @@ export default function Blog() {
 
   function getPosts(){
     try{
-      Axios.get('http://localhost:3001/api/posts/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/posts/get').then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "PENDIENTE");
       if(verifiedPosts.length<=0){
