@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
 import Axios from 'axios';
 import md5 from 'crypto-js/md5'
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Profile({token}) {
   const [user, setUser] = useState({});
@@ -21,7 +22,7 @@ export default function Profile({token}) {
 
   async function getUser(){
     try{
-      await Axios.get('http://localhost:3001/api/getuser',{
+      await Axios.get(SERVICES_URL+'/api/getuser',{
         params: {correo: token}
       }
       ).then((response) => {

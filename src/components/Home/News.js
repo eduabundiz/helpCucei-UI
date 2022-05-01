@@ -3,6 +3,7 @@ import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
 import {notification} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function News({token}) {
     const [emptyCheck, setEmptyCheck] = useState(false);
@@ -71,7 +72,7 @@ export default function News({token}) {
         //PETICIÓ POST PARA REGISTRAR POST
         try{
           console.log("REGISTRA");
-          Axios.post('http://localhost:3001/api/news/insert',newsData).then(() => {
+          Axios.post(SERVICES_URL+'/api/news/insert',newsData).then(() => {
             alert('successful insert')
           });
           setShow(false)
@@ -147,7 +148,7 @@ const CategoryWidget = () =>{
 
   async function getUser(){
     try{
-      await Axios.get('http://localhost:3001/api/getuser',{
+      await Axios.get(SERVICES_URL+'/api/getuser',{
         params: {correo: token}
       }
       ).then((response) => {
@@ -160,7 +161,7 @@ const CategoryWidget = () =>{
 
   function getCarreras(){
     try{
-      Axios.get('http://localhost:3001/api/carreras/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/carreras/get').then((response) => {
       setCarreas(response.data);
     });
     }catch{
@@ -170,7 +171,7 @@ const CategoryWidget = () =>{
 
   function getPosts(){
     try{
-      Axios.get('http://localhost:3001/api/news/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/news/get').then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
@@ -195,7 +196,7 @@ const CategoryWidget = () =>{
 
   function getSocialAreas(){
     try{
-      Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
       setSocialAreas(response.data);
     });
     }catch{

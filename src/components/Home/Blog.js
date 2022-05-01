@@ -4,6 +4,7 @@ import {notification} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import {Link, useParams} from "react-router-dom";
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Blog({token}) {
     const [emptyCheck, setEmptyCheck] = useState(false);
@@ -86,7 +87,7 @@ export default function Blog({token}) {
         //PETICIÓ POST PARA REGISTRAR POST
         try{
           console.log("REGISTRA");
-          Axios.post('http://localhost:3001/api/posts/insert',postData).then(() => {
+          Axios.post(SERVICES_URL+'/api/posts/insert',postData).then(() => {
             alert('successful insert')
           });
           setShow(false)
@@ -164,7 +165,7 @@ const CategoryWidget = () =>{
 
 async function getUser(){
   try{
-    await Axios.get('http://localhost:3001/api/getuser',{
+    await Axios.get(SERVICES_URL+'/api/getuser',{
       params: {correo: token}
     }
     ).then((response) => {
@@ -177,7 +178,7 @@ async function getUser(){
 
   function getCarreras(){
     try{
-      Axios.get('http://localhost:3001/api/carreras/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/carreras/get').then((response) => {
       setCarreas(response.data);
     });
     }catch{
@@ -187,7 +188,7 @@ async function getUser(){
 
   function getComments(){
     try{
-      Axios.get('http://localhost:3001/api/comments/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/comments/get').then((response) => {
       console.log("GetComments: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
@@ -205,7 +206,7 @@ async function getUser(){
 
   function getPosts(){
     try{
-      Axios.get('http://localhost:3001/api/posts/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/posts/get').then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
@@ -230,7 +231,7 @@ async function getUser(){
 
   function getSocialAreas(){
     try{
-      Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
       setSocialAreas(response.data);
     });
     }catch{
