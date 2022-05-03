@@ -134,7 +134,7 @@ export default function Blog({token}) {
           setErrorSignUp(true);
         }
        console.log("NEWPOST: ", postData)
-       window.location.reload(true);
+       window.location.href = window.location.href;
       };
 
   const PostCard = ({post}) =>{
