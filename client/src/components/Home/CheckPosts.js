@@ -39,13 +39,14 @@ export default function Blog() {
         try{
             Axios.put(SERVICES_URL+'/api/posts/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
               console.log("status: ",response.data);
+                          window.location.reload(true);
           });
           }catch{
             console.log("ERROR CHANGING STATUS")
           }
           setModalVisualizar(!modalVisualizar);
           getPosts();
-          window.location.reload(true);
+
           notification.success({ message: 'Post aprobado'});
       }
 
