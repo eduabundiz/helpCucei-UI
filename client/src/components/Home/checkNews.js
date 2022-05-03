@@ -3,6 +3,7 @@ import {Modal, Table, Button} from 'antd';
 import {notification} from 'antd';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function CheckNews() {
     const [modalVisualizar, setModalVisualizar] = useState(false);
@@ -12,7 +13,7 @@ export default function CheckNews() {
       const changePostStatus = (estado) =>{
         console.log("Estado: ",estado, " | ",post.id);
         try{
-            Axios.put('http://localhost:3001/api/news/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
+            Axios.put(SERVICES_URL+'/api/news/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
               getPosts();
               notification.success({ message: 'Operación realizada con éxito'});
           });
@@ -24,7 +25,7 @@ export default function CheckNews() {
 
   function getPosts(){
     try{
-      Axios.get('http://localhost:3001/api/news/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/news/get').then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "PENDIENTE");
       if(verifiedPosts.length<=0){
