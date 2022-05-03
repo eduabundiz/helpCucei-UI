@@ -689,3 +689,8 @@ th.documents-column-css {
     margin: 2rem 0 1rem 0;
     width: 93%;
 }
+
+.graphDiv{
+    padding: 3rem;
+    margin: 0;
+}

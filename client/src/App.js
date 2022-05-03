@@ -5,6 +5,8 @@ import Home from './components/Home/Home';
 import Blog from './components/Home/Blog';
 import CheckPosts from './components/Home/CheckPosts';
 import CheckNews from './components/Home/checkNews';
+import CheckComments from './components/Home/checkComments';
+import Statistics from './components/Home/Statistics';
 import News from './components/Home/News';
 import Profile from './components/Home/Profile'
 import UsersManagement from './components/Home/UsersManagement';
@@ -30,6 +32,8 @@ export default function App() {
         <Route path='/blog' element={<Blog token={token}/>}/>
         <Route path='/checkposts' element={<CheckPosts/>}/>
         <Route path='/checknews' element={<CheckNews/>}/>
+        <Route path='/checkcomments' element={<CheckComments/>}/>
+        <Route path='/statistics' element={<Statistics/>}/>
         <Route path='/news' element={<News token={token}/>}/>
         <Route path='/profile' element={<Profile token={token}/>}/>
         <Route path='/usersmanagement' element={<UsersManagement token={token}/>}/>
