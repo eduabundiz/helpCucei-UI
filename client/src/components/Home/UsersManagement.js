@@ -15,7 +15,7 @@ export default function UsersManagement({token}) {
   function getUsers(){
     try{
       Axios.get(SERVICES_URL+'/api/get').then((response) => {
-      setUsers(response.data.filter((u)=>u.rol!=='Administrador'));
+      setUsers(response.data);
     });
     }catch{
       console.log("ERROR GET USERS")
@@ -27,14 +27,13 @@ export default function UsersManagement({token}) {
     try{
         Axios.put(SERVICES_URL+'/api/role/update',{rol: role, id: user.id}).then((response) => {
           console.log("status: ",response.data);
+          getUsers();
+          notification.success({ message: 'Permisos de usuario actualizados'});
       });
       }catch{
         console.log("ERROR CHANGING STATUS")
       }
       setModalVisualizar(!modalVisualizar);
-      getUsers();
-      window.location.reload(true);
-      notification.success({ message: 'Permisos de usuario actualizados'});
   }
 
   useEffect(() =>{
@@ -83,7 +82,7 @@ export default function UsersManagement({token}) {
     className: "documents-column-css textCenter",
     render: (fila) => (
       <div>
-        <Button type='primary' className='buttonVisualizar'onClick={()=>{setUser(fila) || setModalVisualizar(!modalVisualizar)}} >Cambiar Permisos</Button>
+        <Button type='primary' disabled={fila.id===8||fila.id===9||fila.id===10} className='buttonVisualizar'onClick={()=>{setUser(fila) || setModalVisualizar(!modalVisualizar)}} >Cambiar Permisos</Button>
       </div>
     )
   }

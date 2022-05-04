@@ -79,16 +79,14 @@ export default function News({token}) {
         try{
           console.log("REGISTRA");
           Axios.post(SERVICES_URL+'/api/news/insert',newsData).then(() => {
-            alert('successful insert')
+            notification.success({ message: 'Noticia enviada a revisión'});
+            getPosts();
           });
           setShow(false)
-          notification.success({ message: 'Noticia enviada a revisión'});
-          
         }catch{
           console.log("ERROR CATCH");
           setErrorSignUp(true);
         }
-       window.location.reload(true);
       };
 
   const PostCard = ({post}) =>{

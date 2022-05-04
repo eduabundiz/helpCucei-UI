@@ -47,7 +47,7 @@ export default function Blog({token}) {
       idPost: "",
       comentario: "",
       status: 1,
-      estadoAprobacion: "APROBADO"
+      estadoAprobacion: "PENDIENTE"
     });
 
       function handleTitle(obj){
@@ -94,7 +94,7 @@ export default function Blog({token}) {
           try{
             console.log("ENVÍA COMMENT");
             Axios.post(SERVICES_URL+'/api/comments/insert',postComment).then(() => {
-              alert('successful insert')
+              notification.success({ message: 'Comentario enviado'})
             })
             getComments(post.id);
           }catch{
@@ -102,7 +102,6 @@ export default function Blog({token}) {
           }
         }
         setShow2(false);
-        notification.success({ message: 'Comentario enviado'})
       }
 
       const sendPost = () =>{
@@ -124,17 +123,15 @@ export default function Blog({token}) {
         try{
           console.log("REGISTRA");
           Axios.post(SERVICES_URL+'/api/posts/insert',postData).then(() => {
-            alert('successful insert')
+            notification.success({ message: 'Post enviado a revisión'});
+            getPosts();
           });
           setShow(false)
-          notification.success({ message: 'Post enviado a revisión'});
-          
         }catch{
           console.log("ERROR CATCH");
           setErrorSignUp(true);
         }
        console.log("NEWPOST: ", postData)
-       window.location.href = window.location.href;
       };
 
   const PostCard = ({post}) =>{

@@ -1,77 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import {Modal, Table, Button, Popover} from 'antd';
+import {Modal, Table, Button} from 'antd';
 import {notification} from 'antd';
-import {useNavigate} from 'react-router-dom';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
 import { SERVICES_URL } from '../../utils/constants';
 
 export default function Blog() {
-    const [emptyCheck, setEmptyCheck] = useState(false);
-    const [errorSignUp, setErrorSignUp] = useState(false);
-    const [successSignUp, setSuccessSignUp] = useState(false);
-    const navigate = useNavigate()
     const [modalVisualizar, setModalVisualizar] = useState(false);
-
-    const [currentSocialAreaName, setCurrentSocialAreaName] = useState("");
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const [socialAreas, setSocialAreas] = useState([]);
-    const [carreras, setCarreas] = useState([]);
     const [post, setPost] = useState({});
     const [posts, setPosts] = useState([]);
-    const [postData, setPostData] =useState({
-        idUsuario: "1",
-        titulo: "",
-        contenido: "",
-        carrera: "",
-        areasocial: "",
-        comentario: "",
-        imgurl: "",
-        fecha: "",
-        status: 1,
-        estadoAprobacion: "PENDIENTE"
-      });
 
       const changePostStatus = (estado) =>{
         console.log("Estado: ",estado, " | ",post.id);
         try{
             Axios.put(SERVICES_URL+'/api/posts/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
-              console.log("status: ",response.data);
-                          window.location.reload(true);
+              getPosts();
+              notification.success({ message: 'Operación realizada con éxito'});
           });
           }catch{
             console.log("ERROR CHANGING STATUS")
           }
           setModalVisualizar(!modalVisualizar);
-          getPosts();
-
-          notification.success({ message: 'Post aprobado'});
       }
-
-  const CategoryWidget = () =>{
-    return(
-        <div className="categoryWidget">
-          <h6 style={{marginBottom:"1rem"}}>Categorías:</h6>
-          {socialAreas.map((sa)=>(
-            <div className='cwl2'>
-              <a  className='linkToCategory' href="">{sa.nombre}</a>
-            </div>
-          ))}
-        </div>
-    )
-  }
-  function getSocialAreas(){
-    try{
-      Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
-      setSocialAreas(response.data);
-      console.log("areas sociales: ",response.data);
-    });
-    }catch{
-      console.log("ERROR GETTING SOCIAL AREAS")
-    }
-  }
 
   function getPosts(){
     try{
@@ -80,16 +30,7 @@ export default function Blog() {
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "PENDIENTE");
       if(verifiedPosts.length<=0){
         setPosts([{
-          idUsuario: "1",
-          titulo: "NO HAY PUBLICACIONES PENDIENTES",
-          contenido: "En este momento no hay nuevas publicaciones pendientes por aprobar.",
-          carrera: "",
-          areasocial: "",
-          comentario: "",
-          imgurl: "",
-          fecha: "",
-          status: 1,
-          estadoAprobacion: "PENDIENTE"
+          titulo: "NO HAY ELEMENTOS PENDIENTES, INTENTE EN OTRO MOMENTO",
         }])
       }else{setPosts(verifiedPosts);}
     });
@@ -99,7 +40,6 @@ export default function Blog() {
   }
 
   useEffect(() =>{
-    getSocialAreas()
     getPosts()
   },[])
   
@@ -128,7 +68,7 @@ export default function Blog() {
       className: "documents-column-css textCenter",
       render: (fila) => (
         <div>
-          <Button type='primary' className='buttonVisualizar' onClick={()=>{setPost(fila) || setModalVisualizar(!modalVisualizar)}}>Revisar</Button>
+          <Button type='primary' disabled={!fila.status} className='buttonVisualizar' onClick={()=>{setPost(fila) || setModalVisualizar(!modalVisualizar)}}>Revisar</Button>
         </div>
       )
     }
@@ -140,9 +80,6 @@ export default function Blog() {
         <div className='checkPostTableDiv'>
           <h4 style={{marginBottom: "2rem"}}>GESTIÓN DE PUBLICACIONES</h4>
           <Table className='checkPostTable' columns={columnsPosts} dataSource={posts} bordered={true}/>
-        </div>
-        <div className='recent'>
-          <CategoryWidget/>
         </div>
 
         <Modal

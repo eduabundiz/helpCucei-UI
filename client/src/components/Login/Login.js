@@ -103,10 +103,9 @@ export default function Login({setToken}) {
       signUpData.signUpDate = date;
       console.log("REGISTRA");
       Axios.post(SERVICES_URL+'/api/insert',signUpData).then(() => {
-        alert('successful insert')
+        setSuccessSignUp(true);
       });
       setShow(false)
-      setSuccessSignUp(true);
     }catch{
       console.log("ERROR CATCH");
       setErrorSignUp(true);
