@@ -6,6 +6,7 @@ import Login from '../Login/Login';
 import lb from '../../assets/lightbulb.png'
 import Axios from 'axios';
 import qr from '../../assets/HCCBQR.png'
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Navigation({token}) {
   const [user, setUser] = useState({});
@@ -15,7 +16,7 @@ export default function Navigation({token}) {
 
   async function getUser(){
     try{
-      await Axios.get('http://localhost:3001/api/getuser',{
+      await Axios.get(SERVICES_URL+'/api/getuser',{
         params: {correo: token}
       }
       ).then((response) => {

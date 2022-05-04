@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import {Link, useParams} from "react-router-dom";
 import Axios from 'axios';
 import noimg from '../../assets/noimg.png'
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Blog({token}) {
     const [emptyCheck, setEmptyCheck] = useState(false);
@@ -93,7 +94,7 @@ export default function Blog({token}) {
         }else{
           try{
             console.log("ENVÍA COMMENT");
-            Axios.post('http://localhost:3001/api/comments/insert',postComment).then(() => {
+            Axios.post(SERVICES_URL+'/api/comments/insert',postComment).then(() => {
               notification.success({ message: 'Comentario enviado'})
             })
             getComments(post.id);
@@ -122,7 +123,7 @@ export default function Blog({token}) {
         //PETICIÓ POST PARA REGISTRAR POST
         try{
           console.log("REGISTRA");
-          Axios.post('http://localhost:3001/api/posts/insert',postData).then(() => {
+          Axios.post(SERVICES_URL+'/api/posts/insert',postData).then(() => {
             notification.success({ message: 'Post enviado a revisión'});
             getPosts();
           });
@@ -194,7 +195,7 @@ const CategoryWidget = () =>{
 
 async function getUser(){
   try{
-    await Axios.get('http://localhost:3001/api/getuser',{
+    await Axios.get(SERVICES_URL+'/api/getuser',{
       params: {correo: token}
     }
     ).then((response) => {
@@ -207,7 +208,7 @@ async function getUser(){
 
   function getCarreras(){
     try{
-      Axios.get('http://localhost:3001/api/carreras/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/carreras/get').then((response) => {
       setCarreas(response.data);
     });
     }catch{
@@ -218,7 +219,7 @@ async function getUser(){
   function getComments(id){
     console.log("comment post id ",id);
     try{
-      Axios.get('http://localhost:3001/api/comments/get', {params:{id: id}}).then((response) => {
+      Axios.get(SERVICES_URL+'/api/comments/get', {params:{id: id}}).then((response) => {
       console.log("GetComments: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
@@ -240,7 +241,7 @@ async function getUser(){
 
   function getPosts(){
     try{
-      Axios.get('http://localhost:3001/api/posts/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/posts/get').then((response) => {
       console.log("GetPosts: ", response.data);
       const verifiedPosts = response.data.filter(post => post.estadoAprobacion === "APROBADO");
       if(verifiedPosts.length<=0){
@@ -265,7 +266,7 @@ async function getUser(){
 
   function getCategoryPosts(socialArea){
     try{
-      Axios.get('http://localhost:3001/api/posts/categoryposts',{
+      Axios.get(SERVICES_URL+'/api/posts/categoryposts',{
         params: {socialArea: socialArea}
       }).then((response) => {
       console.log("GetPosts: ", response.data);
@@ -292,7 +293,7 @@ async function getUser(){
 
   function getSocialAreas(){
     try{
-      Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
       setSocialAreas(response.data);
     });
     }catch{

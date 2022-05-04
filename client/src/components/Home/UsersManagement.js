@@ -4,6 +4,7 @@ import {Form} from 'react-bootstrap';
 import {notification} from 'antd';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function UsersManagement({token}) {
 
@@ -13,7 +14,7 @@ export default function UsersManagement({token}) {
 
   function getUsers(){
     try{
-      Axios.get('http://localhost:3001/api/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/get').then((response) => {
       setUsers(response.data);
     });
     }catch{
@@ -24,7 +25,7 @@ export default function UsersManagement({token}) {
   const changeRole = (role) =>{
     console.log("Rol: ", role, " | ",user.id);
     try{
-        Axios.put('http://localhost:3001/api/role/update',{rol: role, id: user.id}).then((response) => {
+        Axios.put(SERVICES_URL+'/api/role/update',{rol: role, id: user.id}).then((response) => {
           console.log("status: ",response.data);
           getUsers();
           notification.success({ message: 'Permisos de usuario actualizados'});

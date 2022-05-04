@@ -6,11 +6,12 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import md5 from 'crypto-js/md5'
 import PropTypes from 'prop-types';
+import { SERVICES_URL } from '../../utils/constants';
 
 
 async function loginUser(credentials) {
   try{
-    return fetch('http://localhost:3001/api/login', {
+    return fetch(SERVICES_URL+'/api/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -108,7 +109,7 @@ export default function Login({setToken}) {
       const date = `${current.getFullYear()}-${current.getMonth()+1}-${current.getDate()}`;
       signUpData.signUpDate = date;
       console.log("REGISTRA");
-      Axios.post('http://localhost:3001/api/insert',signUpData).then(() => {
+      Axios.post(SERVICES_URL+'/api/insert',signUpData).then(() => {
         setSuccessSignUp(true);
       });
       setShow(false)
@@ -138,7 +139,7 @@ export default function Login({setToken}) {
   
   function getUsers(){
     try{
-      Axios.get('http://localhost:3001/api/get').then((response) => {
+      Axios.get(SERVICES_URL+'/api/get').then((response) => {
       setUsers(response.data);
     });
     }catch{
