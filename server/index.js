@@ -8,13 +8,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors());
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '1234',
-    database: 'helpcuceidb'
-});
-
-const db2 = mysql.createPool({
     host: 'wb39lt71kvkgdmw0.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     user: 'item1z6pj06n4wle',
     password: 'i2hdaaf22omv7ssf',
@@ -22,9 +15,10 @@ const db2 = mysql.createPool({
 });
 
 app.use('/api/login', (req, res) => {
-    const sqlStatement= "SELECT * FROM usuarios WHERE correo = ? AND contraseña = ?;";
+    const sqlStatement= "SELECT * FROM usuarios WHERE correo = ? AND contrasena = ?;";
     db.query(sqlStatement, [req.body.username, req.body.password2], (err, result) =>{
-        if(result.length>0){
+        console.log("result: ", result)
+        if(result){
             res.send({
                 token: req.body.username,
           });
@@ -120,15 +114,15 @@ app.post('/api/insert', (req,res) => {
         apellidoM: req.body.secondLastName,
         fechaNacimiento: req.body.dateOfBirth,
         correo: req.body.email,
-        contraseña: req.body.password,
+        contrasena: req.body.password,
         rol: req.body.rol,
         fechaIngreso: req.body.ingressDate,
         idCarrera: req.body.career,
         fechaRegistro: req.body.signUpDate
         }
         console.log("DATA: ",data);
-        const sqlStatement = "INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, correo, contraseña, rol, fechaIngreso, fechaRegistro, idCarrera) VALUES (?,?,?,?,?,?,?,?,?,?);"
-        db.query(sqlStatement, [data.nombre, data.apellidoP, data.apellidoM, data.fechaNacimiento, data.correo, data.contraseña, data.rol, data.fechaIngreso, data.fechaRegistro, data.idCarrera], (err, result) => {
+        const sqlStatement = "INSERT INTO usuarios (nombre, apellidoPaterno, apellidoMaterno, fechaNacimiento, correo, contrasena, rol, fechaIngreso, fechaRegistro, idCarrera) VALUES (?,?,?,?,?,?,?,?,?,?);"
+        db.query(sqlStatement, [data.nombre, data.apellidoP, data.apellidoM, data.fechaNacimiento, data.correo, data.contrasena, data.rol, data.fechaIngreso, data.fechaRegistro, data.idCarrera], (err, result) => {
             console.log('RES: ',result);
             console.log('ERR: ',err);
             res.send(result);
@@ -223,7 +217,7 @@ app.put('/api/user/update', (req,res) => {
 
 app.put('/api/password/update', (req,res) => {
     console.log("REQBODY: ",req.body);
-    const sqlStatement = "UPDATE usuarios SET contraseña = ? WHERE id = ?;"
+    const sqlStatement = "UPDATE usuarios SET contrasena = ? WHERE id = ?;"
     db.query(sqlStatement, [req.body.password, req.body.id], (err, result) => {
         console.log('RES: ',result);
         console.log('ERR: ',err);
@@ -280,6 +274,9 @@ app.get('/api/news/countone', (req, res) =>{
     });
 });
 
-app.listen(3001, () =>{
-    console.log("running on port 3001");
+console.log("process.env.PORT",process.env.PORT);
+console.log("process.env.HOST",process.env.HOST);
+
+app.listen( process.env.PORT || 3001, () =>{
+    console.log("running on port ", process.env.PORT || 3001);
 });
