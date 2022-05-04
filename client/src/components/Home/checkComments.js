@@ -3,6 +3,7 @@ import {Modal, Table, Button} from 'antd';
 import {notification} from 'antd';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function CheckNews() {
     const [modalVisualizar, setModalVisualizar] = useState(false);
@@ -11,7 +12,7 @@ export default function CheckNews() {
 
     const changePostStatus = async (estado) =>{
         try{
-            await Axios.put('http://localhost:3001/api/comment/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
+            await Axios.put(/api/comment/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
               getAllComments();
               notification.success({ message: 'Operación realizada con éxito'});
           });
@@ -23,7 +24,7 @@ export default function CheckNews() {
 
   function getAllComments(){
     try{
-      Axios.get('http://localhost:3001/api/comments/getall').then((response) => {
+      Axios.get(SERVICES_URL+'/api/comments/getall').then((response) => {
       const verifiedComments = response.data.filter(com => com.estadoAprobacion === "PENDIENTE");
       if(verifiedComments.length<=0){
         setComments([{

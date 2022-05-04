@@ -4,6 +4,7 @@ import {notification} from 'antd';
 import 'antd/dist/antd.css';
 import Axios from 'axios';
 import { PieChart } from 'react-minimal-pie-chart';
+import { SERVICES_URL } from '../../utils/constants';
 
 export default function Statistics() {
     const [modalVisualizar, setModalVisualizar] = useState(false);
@@ -38,7 +39,7 @@ export default function Statistics() {
 
       function getSocialAreas(){
         try{
-          Axios.get('http://localhost:3001/api/socialareas/get').then((response) => {
+          Axios.get(SERVICES_URL+'/api/socialareas/get').then((response) => {
           setSocialAreas(response.data);
         });
         }catch{
@@ -50,7 +51,7 @@ export default function Statistics() {
           let cantp = 1;
           let cantn = 1;
           try{
-            Axios.get('http://localhost:3001/api/posts/countone',{params: {id:id}}).then((response) => {
+            Axios.get(SERVICES_URL+'/api/posts/countone',{params: {id:id}}).then((response) => {
                 console.log("postcount: ",response.data);
                 if(response.data[0].cantp === 0 && response.data[0].cantn === 0){
                     setdatapie([{ title: 'Publicaciones', value: cantp, color: '#007bff' },
@@ -66,7 +67,7 @@ export default function Statistics() {
 
   function countPost(){
       try{
-        Axios.get('http://localhost:3001/api/posts/countall').then((response) => {
+        Axios.get(SERVICES_URL+'/api/posts/countall').then((response) => {
             setGenPost({titulo: "PUBLICACIONES", cantidad: response.data[0].cantidad});
         });
       }catch{
@@ -75,7 +76,7 @@ export default function Statistics() {
   }
   function countNews(){
     try{
-      Axios.get('http://localhost:3001/api/news/countall').then((response) => {
+      Axios.get(SERVICES_URL+'/api/news/countall').then((response) => {
           setGenNews({titulo: "NOTICIAS", cantidad: response.data[0].cantidad});
       });
     }catch{
@@ -84,7 +85,7 @@ export default function Statistics() {
 }
 function countUsers(){
     try{
-      Axios.get('http://localhost:3001/api/users/countall').then((response) => {
+      Axios.get(SERVICES_URL+'/api/users/countall').then((response) => {
           setGenUsers({titulo: "USUARIOS", cantidad: response.data[0].cantidad});
       });
     }catch{
@@ -93,7 +94,7 @@ function countUsers(){
 }
 function countComments(){
     try{
-      Axios.get('http://localhost:3001/api/comments/countall').then((response) => {
+      Axios.get(SERVICES_URL+'/api/comments/countall').then((response) => {
           setGenComments({titulo: "COMENTARIOS", cantidad: response.data[0].cantidad});
       });
     }catch{
