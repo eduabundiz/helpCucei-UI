@@ -33,6 +33,7 @@ export default function Login({setToken}) {
   const [passwordCheck, setPasswordCheck] = useState(false);
   const [emailCheck, setEmailCheck] = useState(false);
   const [emptyCheck, setEmptyCheck] = useState(false);
+  const [badEmail, setBadEmail] = useState(false);
   const [errorSignUp, setErrorSignUp] = useState(false);
   const [successSignUp, setSuccessSignUp] = useState(false);
   const [successSignIn, setSuccessSignIn] = useState(false);
@@ -60,6 +61,7 @@ export default function Login({setToken}) {
   const [password2, setPassword2] = useState();
 
   const signUpUser = () =>{
+    const ValidEmail = new RegExp(/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
     //VALIDACIÓN CAMPOS VACÍOS
     if(
       signUpData.name === '' ||
@@ -72,6 +74,11 @@ export default function Login({setToken}) {
       signUpData.password === ''
     ){
       setEmptyCheck(true);
+      return;
+    }
+    //VALIDAR DIRECCIÓN DE CORREO
+    if(!ValidEmail.test(signUpData.email)){
+      setBadEmail(true);
       return;
     }
     //CONTRASEÑA 8 CARACTERES MIN
@@ -182,7 +189,7 @@ export default function Login({setToken}) {
     setPass(obj.target.value);
   }
   function checkPassword(obj){
-    console.log("checkPassword: ",obj.target.value)
+    //console.log("checkPassword: ",obj.target.value)
     setPassword(md5(obj.target.value).toString());
   }
 
@@ -260,7 +267,7 @@ export default function Login({setToken}) {
             </Form.Select>
           </Form.Group>
           <Form.Group className="mb-3SingUp" controlId="formBasicIngressDate">
-            <Form.Control className='formControlSignUp' type="text" placeholder="Ingrese su calendario de ingreso" onChange={(value)=>handleIngressDate(value)}/>
+            <Form.Control className='formControlSignUp' type="text" placeholder="Ingrese su calendario de ingreso (ej. 2019A)" onChange={(value)=>handleIngressDate(value)}/>
           </Form.Group>
           <Form.Group className="mb-3SingUp" controlId="formBasicEmail">
             <Form.Control className='formControlSignUp' type="email" placeholder="Ingrese su correo electrónico" onChange={(value)=>handleEmail(value)}/>
@@ -335,6 +342,20 @@ export default function Login({setToken}) {
           <strong className="me-auto">ERROR</strong>
         </Toast.Header>
         <Toast.Body>Asegúrate de llenar todos los campos.</Toast.Body>
+      </Toast>
+    </ToastContainer>
+
+    <ToastContainer position="top-center" className="p-3">
+      <Toast onClose={() => setBadEmail(false)} show={badEmail} delay={2000} autohide>
+        <Toast.Header>
+          <img
+            src="holder.js/20x20?text=%20"
+            className="rounded me-2"
+            alt=""
+          />
+          <strong className="me-auto">ERROR</strong>
+        </Toast.Header>
+        <Toast.Body>Ingresa un correo electrónico válido.</Toast.Body>
       </Toast>
     </ToastContainer>
 

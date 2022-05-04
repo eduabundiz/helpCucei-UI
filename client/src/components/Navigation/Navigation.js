@@ -69,7 +69,7 @@ export default function Navigation({token}) {
               <Link className='navigationBlogDropDown' to="/usersmanagement">GESTIÓN DE USUARIOS</Link>
             </NavDropdown.Item>
             <NavDropdown.Item>
-              <Link className='navigationBlogDropDown' to="/statistics">ESTADÍSTICAS</Link>
+              <Link className='navigationBlogDropDown' to="/statistics">INFORMACIÓN GENERAL</Link>
             </NavDropdown.Item>
           </NavDropdown>
         </Nav>

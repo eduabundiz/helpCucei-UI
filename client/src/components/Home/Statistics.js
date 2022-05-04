@@ -128,7 +128,7 @@ function countComments(){
     <div style={{display: "flex", justifyContent: "center"}}>
         <style>{'body{background-color: rgb(219, 232, 255) !important;}'}</style>
         <div className='checkPostTableDiv'>
-        <h4 style={{marginBottom: "2rem"}}>ESTADÍSTICAS GENERALES</h4>
+        <h4 style={{marginBottom: "2rem"}}>DATOS GENERALES</h4>
           <Table className='checkPostTable' columns={columnsPosts} dataSource={[genPost,genNews,genUsers,genComments]} bordered={true} pagination={false}/>
           
         </div>
