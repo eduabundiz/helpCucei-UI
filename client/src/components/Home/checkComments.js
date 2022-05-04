@@ -12,7 +12,7 @@ export default function CheckNews() {
 
     const changePostStatus = async (estado) =>{
         try{
-            await Axios.put(/api/comment/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
+            await Axios.put(SERVICES_URL+'/api/comment/update',{estadoAprobacion: estado, id: post.id}).then((response) => {
               getAllComments();
               notification.success({ message: 'Operación realizada con éxito'});
           });
