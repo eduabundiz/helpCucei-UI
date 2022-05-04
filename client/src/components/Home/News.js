@@ -3,6 +3,7 @@ import { Button, Form, Modal, Toast, ToastContainer} from 'react-bootstrap';
 import {notification} from 'antd';
 import {useNavigate} from 'react-router-dom';
 import Axios from 'axios';
+import noimg from '../../assets/noimg.png'
 
 export default function News({token}) {
     const [emptyCheck, setEmptyCheck] = useState(false);
@@ -119,13 +120,8 @@ const PostWidget = () =>{
         {items.map((post)=>(
           <div className='pwl2'>
             <div className='pwl3'>
-              <img
-                className='pwimg'
-                alt={post.tema}
-                height="50px"
-                width="50px"
-                src={post.imgurl}
-              />
+              {post.imgurl ? <img className='pwimg' alt={post.tema} height="50px" width="50px" src={post.imgurl}/> : 
+              <img className='pwimg' alt={post.tema} height="50px" width="50px" src={noimg}/>}
             </div>
             <div>
               <p className='pwp'>{post.fechaInicio.toString().slice(0,10)}</p>
